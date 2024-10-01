@@ -9,7 +9,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "bun build src/index.ts --outdir=dist && cp src/package.json dist/",
+    "start": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir=dist && cp src/package.json dist/ && cp src/README.md dist/",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -24,7 +25,10 @@
   },
   "homepage": "https://github.com/alexy-os/bun-lmdb-connector#readme",
   "dependencies": {
-    "lmdb": "latest"
+    "@elysiajs/cors": "^1.1.1",
+    "elysia": "latest",
+    "lmdb": "latest",
+    "ws": "latest"
   },
   "devDependencies": {
     "bun-types": "latest"

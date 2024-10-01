@@ -1,33 +1,68 @@
 import { Elysia } from 'elysia';
 import { RUNTIME_CONFIG, initializeDatabases } from './config';
 import { Connector } from './connector';
+import { cors } from '@elysiajs/cors';
 
 initializeDatabases();
 
 const app = new Elysia();
+app.use(cors());
+
+// New root route
+app.get('/api', () => {
+  return Object.keys(Connector.getAll);
+});
 
 // REST API endpoints
 app.get('/api/:dbName/:key', async ({ params }) => {
-  const { dbName, key } = params;
-  return await Connector.get(dbName, key);
+  try {
+    const { dbName, key } = params;
+    return await Connector.get(dbName, key);
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 });
 
 app.post('/api/:dbName', async ({ params, body }) => {
-  const { dbName } = params;
-  const { key, value } = body as { key: string; value: any };
-  await Connector.put(dbName, key, value);
-  return { success: true };
+  try {
+    const { dbName } = params;
+    const { key, value } = body as { key: string; value: any };
+    await Connector.put(dbName, key, value);
+    return { success: true };
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 });
 
 app.delete('/api/:dbName/:key', async ({ params }) => {
-  const { dbName, key } = params;
-  await Connector.remove(dbName, key);
-  return { success: true };
+  try {
+    const { dbName, key } = params;
+    await Connector.remove(dbName, key);
+    return { success: true };
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 });
 
 app.get('/api/:dbName', async ({ params }) => {
-  const { dbName } = params;
-  return await Connector.getAll(dbName);
+  try {
+    const { dbName } = params;
+    return await Connector.getAll(dbName);
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 });
 
 // WebSocket support
@@ -61,6 +96,6 @@ app.ws('/ws', {
   }
 });
 
-app.listen(RUNTIME_CONFIG.server.port, RUNTIME_CONFIG.server.host, () => {
+app.listen(RUNTIME_CONFIG.server.port, () => {
   console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
 });

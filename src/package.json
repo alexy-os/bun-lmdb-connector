@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/alexy-os/bun-lmdb-connector#readme",
   "dependencies": {
-    "lmdb": "latest"
+    "lmdb": "latest",
+    "ws": "latest",
+    "elysia": "latest"
   }
 }

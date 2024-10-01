@@ -1,4 +1,4 @@
-import { Database } from 'lmdb';
+import { open } from 'lmdb';
 
 export interface DatabaseConfig {
   name: string;
@@ -18,11 +18,11 @@ export interface Config {
 
 export const DEFAULT_CONFIG: Config = {
   databases: [
-    { name: 'main', path: './data/main.mdb' }
+    { name: 'main', path: './' }
   ],
   server: {
-    port: 3000,
-    host: 'localhost'
+    port: 5000,
+    host: '127.0.0.1'
   },
   logLevel: 'info'
 };
@@ -33,10 +33,13 @@ export function setConfig(newConfig: Partial<Config>) {
   RUNTIME_CONFIG = { ...RUNTIME_CONFIG, ...newConfig };
 }
 
-export const databases: { [key: string]: Database } = {};
+export const databases: { [key: string]: ReturnType<typeof open> } = {};
 
 export function initializeDatabases() {
   RUNTIME_CONFIG.databases.forEach(dbConfig => {
-    databases[dbConfig.name] = new Database(dbConfig.path);
+    databases[dbConfig.name] = open({
+      path: dbConfig.path,
+      compression: true,
+    });
   });
 }

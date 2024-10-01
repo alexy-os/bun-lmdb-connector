@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test bun-lmdb-connector REST API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label, input, select, button {
+            margin: 5px 0;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test bun-lmdb-connector REST API</h1>
+    
+    <form id="apiForm">
+        <label for="dbName">Database Name:</label>
+        <input type="text" id="dbName" required>
+        
+        <label for="action">Action:</label>
+        <select id="action" required>
+            <option value="get">Get</option>
+            <option value="put">Put</option>
+            <option value="delete">Delete</option>
+            <option value="getAll">Get All</option>
+        </select>
+        
+        <label for="key">Key:</label>
+        <input type="text" id="key">
+        
+        <label for="value">Value:</label>
+        <input type="text" id="value">
+        
+        <button type="submit">Send Request</button>
+    </form>
+    
+    <script>
+        const form = document.getElementById('apiForm');
+        const baseUrl = 'http://127.0.0.1:5000/api'; // Измените на ваш URL, если он отличается
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const dbName = document.getElementById('dbName').value;
+            const action = document.getElementById('action').value;
+            const key = document.getElementById('key').value;
+            const value = document.getElementById('value').value;
+            
+            let url = `${baseUrl}/${dbName}`;
+            let method = 'GET';
+            let body = null;
+            
+            switch (action) {
+                case 'get':
+                    url += `/${key}`;
+                    break;
+                case 'put':
+                    method = 'POST';
+                    body = JSON.stringify({ key, value });
+                    break;
+                case 'delete':
+                    method = 'DELETE';
+                    url += `/${key}`;
+                    break;
+                case 'getAll':
+                    // URL остается без изменений
+                    break;
+            }
+            
+            try {
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body,
+                });
+                
+                // Проверяем тип контента
+                const contentType = response.headers.get("content-type");
+                let result;
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    result = await response.json();
+                } else {
+                    result = await response.text();
+                }
+                console.log('Response:', result);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

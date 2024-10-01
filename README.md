@@ -59,8 +59,10 @@ To set up the project for development:
 
 3. Start the development server:
    ```bash
-   bun run dev
+   bun start
    ```
+
+   use test-connector.html to test the connector and database name is `main` by default
 
 ## Building the Package
 
