@@ -1,0 +1,22 @@
+{
+  "name": "bun-lmdb-connector",
+  "version": "1.0.0",
+  "description": "Library for working with LMDB in Bun",
+  "main": "index.js",
+  "module": "index.mjs",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexy-os/bun-lmdb-connector.git"
+  },
+  "keywords": ["bun", "lmdb", "connector"],
+  "author": "Alexy Os",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexy-os/bun-lmdb-connector/issues"
+  },
+  "homepage": "https://github.com/alexy-os/bun-lmdb-connector#readme",
+  "dependencies": {
+    "lmdb": "latest"
+  }
+}
