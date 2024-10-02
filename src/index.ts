@@ -1,3 +1,5 @@
+/// <reference types="bun-types" />
+
 import { Elysia } from 'elysia';
 import { RUNTIME_CONFIG, initializeDatabases, setConfig } from './config';
 import { setupRoutes } from './routes';
@@ -20,8 +22,8 @@ export function startServer(app: Elysia) {
   });
 }
 
-// Добавляем проверку, запущен ли файл напрямую
-if (import.meta.main) {
+// Проверка, запущен ли файл напрямую
+if (typeof Bun !== 'undefined' && Bun.main === import.meta.path) {
   initializeDatabases();
   const app = createServer();
   startServer(app);

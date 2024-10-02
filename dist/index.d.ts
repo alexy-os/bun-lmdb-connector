@@ -1,8 +1,29 @@
 import { Elysia } from 'elysia';
-import { initializeDatabases, setConfig } from './config';
-import { Connector } from './connector';
-export { setConfig, initializeDatabases, Connector };
-export declare function createServer(): Elysia<"", false, {
+
+interface DatabaseConfig {
+    name: string;
+    path: string;
+}
+interface ServerConfig {
+    port: number;
+    host: string;
+}
+interface Config {
+    databases: DatabaseConfig[];
+    server: ServerConfig;
+    logLevel: 'debug' | 'info' | 'warn' | 'error';
+}
+declare function setConfig(newConfig: Partial<Config>): void;
+declare function initializeDatabases(): void;
+
+declare class Connector {
+    static get(dbName: string, key: string): Promise<any>;
+    static put(dbName: string, key: string, value: any): Promise<void>;
+    static remove(dbName: string, key: string): Promise<void>;
+    static getAll(dbName: string): Promise<any[]>;
+}
+
+declare function createServer(): Elysia<"", false, {
     decorator: {};
     store: {};
     derive: {};
@@ -23,4 +44,6 @@ export declare function createServer(): Elysia<"", false, {
     resolve: {};
     schema: {};
 }>;
-export declare function startServer(app: Elysia): void;
+declare function startServer(app: Elysia): void;
+
+export { Connector, createServer, initializeDatabases, setConfig, startServer };

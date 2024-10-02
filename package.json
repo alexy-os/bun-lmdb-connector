@@ -1,6 +1,6 @@
 {
   "name": "bun-lmdb-connector",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Library for working with LMDB in Bun",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -9,12 +9,9 @@
     "dist"
   ],
   "scripts": {
-    "server": "bun run server/index.ts",
     "start": "bun run src/index.ts",
-    "build": "rm -rf dist && bun build src/index.ts --target=node --outdir=dist && tsc && cp dist/index.js dist/index.mjs && cp src/package.json dist/ && cp src/README.md dist/",
-    "prepublishOnly": "bun run build",
-    "version": "npm run build && git add -A dist",
-    "postversion": "git push && git push --tags && git checkout dist && git merge main && git push origin dist"
+    "build": "rm -rf dist && rollup -c && cp src/package.json dist/ && cp src/README.md dist/",
+    "prepublishOnly": "bun run build"
   },
   "repository": {
     "type": "git",
@@ -39,12 +36,12 @@
   },
   "devDependencies": {
     "bun-types": "^1.0.13",
-    "typescript": "^5.0.0"
-  },
-  "peerDependencies": {
-    "bun-types": "^1.0.13"
-  },
-  "publishConfig": {
-    "access": "public"
+    "typescript": "^5.0.0",
+    "tslib": "^2.6.2",
+    "rollup": "^2.79.1",
+    "@rollup/plugin-typescript": "^8.3.3",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "rollup-plugin-dts": "^4.2.2"
   }
 }

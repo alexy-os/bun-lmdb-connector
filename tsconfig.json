@@ -4,12 +4,9 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
     "outDir": "./dist",
-    "rootDir": "./src",
-    "types": ["bun-types"],
+    "strict": true,
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
