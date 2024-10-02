@@ -13,7 +13,7 @@
     "build": "rm -rf dist && bun build src/index.ts --target=node --outdir=dist && tsc && cp dist/index.js dist/index.mjs && cp src/package.json dist/ && cp src/README.md dist/",
     "prepublishOnly": "bun run build",
     "version": "npm run build && git add -A dist",
-    "postversion": "git push && git push --tags && git checkout dist && git merge main && git push origin dist"
+    "postversion": "git push && git push --tags && git checkout dist -- && git merge main && git push origin dist"
   },
   "repository": {
     "type": "git",
