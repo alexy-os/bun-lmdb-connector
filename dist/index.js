@@ -20872,7 +20872,10 @@ function startServer() {
   initializeDatabases();
   const app = new Elysia;
   setupRoutes(app);
-  app.listen(RUNTIME_CONFIG.server.port, () => {
+  app.listen({
+    port: RUNTIME_CONFIG.server.port,
+    hostname: RUNTIME_CONFIG.server.host
+  }, () => {
     console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
   });
   return app;

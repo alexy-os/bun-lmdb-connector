@@ -1,6 +1,7 @@
 import { Elysia } from 'elysia';
-export { setConfig, initializeDatabases } from './config';
-export { Connector } from './connector';
+import { initializeDatabases, setConfig } from './config';
+import { Connector } from './connector';
+export { setConfig, initializeDatabases, Connector };
 export declare function startServer(): Elysia<"", false, {
     decorator: {};
     store: {};

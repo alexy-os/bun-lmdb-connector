@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia';
 import { RUNTIME_CONFIG, initializeDatabases, setConfig } from './config';
 import { setupRoutes } from './routes';
+import { Connector } from './connector';
 
-export { setConfig, initializeDatabases } from './config';
-export { Connector } from './connector';
+export { setConfig, initializeDatabases, Connector };
 
 export function startServer() {
   initializeDatabases();
@@ -11,7 +11,10 @@ export function startServer() {
   const app = new Elysia();
   setupRoutes(app);
 
-  app.listen(RUNTIME_CONFIG.server.port, () => {
+  app.listen({
+    port: RUNTIME_CONFIG.server.port,
+    hostname: RUNTIME_CONFIG.server.host
+  }, () => {
     console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
   });
 
