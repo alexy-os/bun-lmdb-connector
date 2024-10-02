@@ -20881,6 +20881,11 @@ function startServer(app) {
     console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
   });
 }
+if (__require.main == __require.module) {
+  initializeDatabases();
+  const app = createServer();
+  startServer(app);
+}
 export {
   startServer,
   setConfig,

@@ -19,3 +19,10 @@ export function startServer(app: Elysia) {
     console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
   });
 }
+
+// Добавляем проверку, запущен ли файл напрямую
+if (import.meta.main) {
+  initializeDatabases();
+  const app = createServer();
+  startServer(app);
+}
