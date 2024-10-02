@@ -20868,21 +20868,23 @@ function handleError(error23) {
 }
 
 // src/index.ts
-function startServer() {
-  initializeDatabases();
+function createServer() {
   const app = new Elysia;
   setupRoutes(app);
+  return app;
+}
+function startServer(app) {
   app.listen({
     port: RUNTIME_CONFIG.server.port,
     hostname: RUNTIME_CONFIG.server.host
   }, () => {
     console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
   });
-  return app;
 }
 export {
   startServer,
   setConfig,
   initializeDatabases,
+  createServer,
   Connector
 };

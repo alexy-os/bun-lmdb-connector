@@ -9,6 +9,7 @@
     "dist"
   ],
   "scripts": {
+    "server": "bun run server/index.ts",
     "start": "bun run src/index.ts",
     "build": "rm -rf dist && bun build src/index.ts --target=node --outdir=dist && tsc && cp dist/index.js dist/index.mjs && cp src/package.json dist/ && cp src/README.md dist/",
     "prepublishOnly": "bun run build",

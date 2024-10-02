@@ -1,4 +1,3 @@
-
 # bun-lmdb-connector
 
 bun-lmdb-connector is a library for working with LMDB (Lightning Memory-Mapped Database) in the Bun environment. It provides a simple and efficient way to interact with LMDB through REST API and WebSocket.
@@ -97,6 +96,35 @@ ws.onmessage = (event) => {
   console.log('Received:', JSON.parse(event.data));
 };
 ```
+
+### Starting the server
+
+To start the server, you can use the following code:
+
+```typescript
+import { setConfig, initializeDatabases, createServer, startServer } from 'bun-lmdb-connector';
+
+// Configure the server (optional)
+setConfig({
+  databases: [
+    { name: 'mydb', path: './data/' }
+  ],
+  server: {
+    port: 3000,
+    host: 'localhost'
+  },
+  logLevel: 'info'
+});
+
+// Initialize databases
+initializeDatabases();
+
+// Create and start the server
+const app = createServer();
+startServer(app);
+```
+
+This will start a server with the configured settings, ready to handle REST API requests and WebSocket connections.
 
 ## Note
 

@@ -2,7 +2,7 @@ import { Elysia } from 'elysia';
 import { initializeDatabases, setConfig } from './config';
 import { Connector } from './connector';
 export { setConfig, initializeDatabases, Connector };
-export declare function startServer(): Elysia<"", false, {
+export declare function createServer(): Elysia<"", false, {
     decorator: {};
     store: {};
     derive: {};
@@ -23,3 +23,4 @@ export declare function startServer(): Elysia<"", false, {
     resolve: {};
     schema: {};
 }>;
+export declare function startServer(app: Elysia): void;
