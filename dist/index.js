@@ -20595,6 +20595,9 @@ if (!versions.deno && !process.isBun) {
 setNativeFunctions(nativeAddon);
 
 // src/config.ts
+function setConfig(newConfig) {
+  RUNTIME_CONFIG = { ...RUNTIME_CONFIG, ...newConfig };
+}
 function initializeDatabases() {
   RUNTIME_CONFIG.databases.forEach((dbConfig) => {
     databases[dbConfig.name] = open({
@@ -20785,7 +20788,77 @@ var cors = (config2) => {
   });
 };
 
-// src/index.ts
+// src/routes.ts
+function setupRoutes(app) {
+  app.use(cors());
+  app.get("/api", () => {
+    return Object.keys(Connector.getAll);
+  });
+  app.get("/api/:dbName/:key", async ({ params }) => {
+    try {
+      const { dbName, key } = params;
+      return await Connector.get(dbName, key);
+    } catch (error23) {
+      return handleError(error23);
+    }
+  });
+  app.post("/api/:dbName", async ({ params, body }) => {
+    try {
+      const { dbName } = params;
+      const { key, value: value15 } = body;
+      await Connector.put(dbName, key, value15);
+      return { success: true };
+    } catch (error23) {
+      return handleError(error23);
+    }
+  });
+  app.delete("/api/:dbName/:key", async ({ params }) => {
+    try {
+      const { dbName, key } = params;
+      await Connector.remove(dbName, key);
+      return { success: true };
+    } catch (error23) {
+      return handleError(error23);
+    }
+  });
+  app.get("/api/:dbName", async ({ params }) => {
+    try {
+      const { dbName } = params;
+      return await Connector.getAll(dbName);
+    } catch (error23) {
+      return handleError(error23);
+    }
+  });
+  app.ws("/ws", {
+    open(ws) {
+      console.log("WebSocket connected");
+    },
+    message(ws, message) {
+      const { action, dbName, key, value: value15 } = JSON.parse(message);
+      let response;
+      switch (action) {
+        case "get":
+          response = Connector.get(dbName, key);
+          break;
+        case "put":
+          response = Connector.put(dbName, key, value15);
+          break;
+        case "remove":
+          response = Connector.remove(dbName, key);
+          break;
+        case "getAll":
+          response = Connector.getAll(dbName);
+          break;
+        default:
+          response = Promise.resolve({ error: "Invalid action" });
+      }
+      response.then((result) => ws.send(JSON.stringify(result)));
+    },
+    close(ws) {
+      console.log("WebSocket closed");
+    }
+  });
+}
 function handleError(error23) {
   const errorMessage = error23 instanceof Error ? error23.message : "An unknown error occurred";
   return new Response(JSON.stringify({ error: errorMessage }), {
@@ -20793,76 +20866,20 @@ function handleError(error23) {
     headers: { "Content-Type": "application/json" }
   });
 }
-initializeDatabases();
-var app = new Elysia;
-app.use(cors());
-app.get("/api", () => {
-  return Object.keys(Connector.getAll);
-});
-app.get("/api/:dbName/:key", async ({ params }) => {
-  try {
-    const { dbName, key } = params;
-    return await Connector.get(dbName, key);
-  } catch (error23) {
-    return handleError(error23);
-  }
-});
-app.post("/api/:dbName", async ({ params, body }) => {
-  try {
-    const { dbName } = params;
-    const { key, value: value15 } = body;
-    await Connector.put(dbName, key, value15);
-    return { success: true };
-  } catch (error23) {
-    return handleError(error23);
-  }
-});
-app.delete("/api/:dbName/:key", async ({ params }) => {
-  try {
-    const { dbName, key } = params;
-    await Connector.remove(dbName, key);
-    return { success: true };
-  } catch (error23) {
-    return handleError(error23);
-  }
-});
-app.get("/api/:dbName", async ({ params }) => {
-  try {
-    const { dbName } = params;
-    return await Connector.getAll(dbName);
-  } catch (error23) {
-    return handleError(error23);
-  }
-});
-app.ws("/ws", {
-  open(ws) {
-    console.log("WebSocket connected");
-  },
-  message(ws, message) {
-    const { action, dbName, key, value: value15 } = JSON.parse(message);
-    let response;
-    switch (action) {
-      case "get":
-        response = Connector.get(dbName, key);
-        break;
-      case "put":
-        response = Connector.put(dbName, key, value15);
-        break;
-      case "remove":
-        response = Connector.remove(dbName, key);
-        break;
-      case "getAll":
-        response = Connector.getAll(dbName);
-        break;
-      default:
-        response = Promise.resolve({ error: "Invalid action" });
-    }
-    response.then((result) => ws.send(JSON.stringify(result)));
-  },
-  close(ws) {
-    console.log("WebSocket closed");
-  }
-});
-app.listen(RUNTIME_CONFIG.server.port, () => {
-  console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
-});
+
+// src/index.ts
+function startServer() {
+  initializeDatabases();
+  const app = new Elysia;
+  setupRoutes(app);
+  app.listen(RUNTIME_CONFIG.server.port, () => {
+    console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
+  });
+  return app;
+}
+export {
+  startServer,
+  setConfig,
+  initializeDatabases,
+  Connector
+};

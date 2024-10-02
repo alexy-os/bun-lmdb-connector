@@ -1,108 +1,99 @@
 # bun-lmdb-connector
 
-A high-performance LMDB connector for Bun, providing seamless integration with Lightning Memory-Mapped Database through REST API and WebSocket interfaces.
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Project Structure](#project-structure)
-- [Development](#development)
-- [Building the Package](#building-the-package)
-- [Publishing](#publishing)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+bun-lmdb-connector is a library for working with LMDB (Lightning Memory-Mapped Database) in the Bun environment. It provides a simple and efficient way to interact with LMDB through REST API and WebSocket.
 
 ## Installation
 
-You can install bun-lmdb-connector using one of the following methods:
-
-1. Via GitHub:
-   ```bash
-   bun add github:alexy-os/bun-lmdb-connector
-   ```
-
-2. Via npm:
-   ```bash
-   bun add bun-lmdb-connector
-   ```
-
-## Project Structure
-
-The project is structured as follows:
-
-- `src/`: Contains the source code
-  - `index.ts`: Main entry point
-  - `config.ts`: Configuration management
-  - `connector.ts`: LMDB connector implementation
-  - `package.json`: Package configuration for distribution
-  - `README.md`: Usage instructions for the package
-- `dist/`: Contains the built package (generated during build)
-- `package.json`: Main package configuration
-- `tsconfig.json`: TypeScript configuration
-- `README.md`: This file
-
-## Development
-
-To set up the project for development:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/alexy-os/bun-lmdb-connector.git
-   cd bun-lmdb-connector
-   ```
-
-2. Install dependencies:
-   ```bash
-   bun install
-   ```
-
-3. Start the development server:
-   ```bash
-   bun start
-   ```
-
-   use test-connector.html to test the connector and database name is `main` by default
-
-## Building the Package
-
-To build the package for distribution:
-
-1. Run the build script:
-   ```bash
-   bun run build
-   ```
-
-This command will:
-- Compile TypeScript files to JavaScript
-- Generate type definitions
-- Copy necessary files to the `dist/` directory
-
-## Publishing
-
-To publish the package to npm:
-
-1. Update the version in `package.json`
-2. Build the package
-3. Run:
-   ```bash
-   npm publish
-   ```
-
-To publish to GitHub Packages, update the `publishConfig` in `package.json` and use:
+You can install bun-lmdb-connector using npm:
 
 ```bash
-npm publish --registry=https://npm.pkg.github.com
+bun add bun-lmdb-connector
 ```
+
+## Main Features
+
+bun-lmdb-connector provides the following main features:
+
+1. Initialization and configuration of databases
+2. CRUD operations through REST API
+3. CRUD operations through WebSocket
+4. Flexible configuration of the server and databases
 
 ## Usage
 
-Refer to the `src/README.md` file for detailed usage instructions of the bun-lmdb-connector package.
+### Initialization
 
-## Contributing
+```typescript
+import { setConfig, initializeDatabases, startServer } from 'bun-lmdb-connector';
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+// Configure the configuration (optional)
+setConfig({
+  databases: [
+    { name: 'mydb', path: './data/mydb.mdb' }
+  ],
+  server: {
+    port: 3000,
+    host: 'localhost'
+  },
+  logLevel: 'info'
+});
 
-## License
+// Initialize databases
+initializeDatabases();
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+// Start the server
+const app = startServer();
+```
+
+### Using Connector
+
+The Connector class provides methods for working with the database:
+
+```typescript
+import { Connector } from 'bun-lmdb-connector';
+
+// Get value
+const value = await Connector.get('mydb', 'key');
+
+// Write value
+await Connector.put('mydb', 'key', 'value');
+
+// Delete value
+await Connector.remove('mydb', 'key');
+
+// Get all values
+const allValues = await Connector.getAll('mydb');
+```
+
+### REST API
+
+bun-lmdb-connector automatically creates REST API endpoints:
+
+- GET /api/:dbName/:key - get value by key
+- POST /api/:dbName - write new value
+- DELETE /api/:dbName/:key - delete value by key
+- GET /api/:dbName - get all values from the database
+
+### WebSocket
+
+To work through WebSocket, connect to the /ws endpoint and send messages in JSON format:
+
+```javascript
+const ws = new WebSocket('ws://localhost:3000/ws');
+
+ws.onopen = () => {
+  ws.send(JSON.stringify({
+    action: 'get',
+    dbName: 'mydb',
+    key: 'someKey'
+  }));
+};
+
+ws.onmessage = (event) => {
+  console.log('Received:', JSON.parse(event.data));
+};
+```
+
+## Note
+
+Make sure you have Bun and all necessary dependencies installed before using this library.

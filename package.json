@@ -1,6 +1,6 @@
 {
   "name": "bun-lmdb-connector",
-  "version": "1.0.3",
+  "version": "1.0.1",
   "description": "Library for working with LMDB in Bun",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
