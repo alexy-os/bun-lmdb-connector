@@ -18,7 +18,7 @@ export interface Config {
 
 export const DEFAULT_CONFIG: Config = {
   databases: [
-    { name: 'main', path: './' }
+    { name: 'main', path: './data/' }
   ],
   server: {
     port: 5000,

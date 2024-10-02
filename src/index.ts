@@ -18,11 +18,8 @@ app.get('/api/:dbName/:key', async ({ params }) => {
   try {
     const { dbName, key } = params;
     return await Connector.get(dbName, key);
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' }
-    });
+  } catch (error: unknown) {
+    return handleError(error);
   }
 });
 
@@ -32,11 +29,8 @@ app.post('/api/:dbName', async ({ params, body }) => {
     const { key, value } = body as { key: string; value: any };
     await Connector.put(dbName, key, value);
     return { success: true };
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' }
-    });
+  } catch (error: unknown) {
+    return handleError(error);
   }
 });
 
@@ -45,11 +39,8 @@ app.delete('/api/:dbName/:key', async ({ params }) => {
     const { dbName, key } = params;
     await Connector.remove(dbName, key);
     return { success: true };
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' }
-    });
+  } catch (error: unknown) {
+    return handleError(error);
   }
 });
 
@@ -57,11 +48,8 @@ app.get('/api/:dbName', async ({ params }) => {
   try {
     const { dbName } = params;
     return await Connector.getAll(dbName);
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' }
-    });
+  } catch (error: unknown) {
+    return handleError(error);
   }
 });
 
@@ -99,3 +87,11 @@ app.ws('/ws', {
 app.listen(RUNTIME_CONFIG.server.port, () => {
   console.log(`Server is running on http://${RUNTIME_CONFIG.server.host}:${RUNTIME_CONFIG.server.port}`);
 });
+
+function handleError(error: unknown): Response {
+  const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+  return new Response(JSON.stringify({ error: errorMessage }), {
+    status: 500,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}

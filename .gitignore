@@ -2,6 +2,4 @@
 /.manual
 /node_modules
 /bun.lockb
-/lock.mdb
-/data.mdb
-/old
+/data
