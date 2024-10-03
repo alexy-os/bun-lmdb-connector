@@ -24,12 +24,12 @@ bun-lmdb-connector provides the following main features:
 ### Initialization
 
 ```typescript
-import { setConfig, initializeDatabases, startServer } from 'bun-lmdb-connector';
+import { setConfig, initializeDatabases, createServer, startServer } from 'bun-lmdb-connector';
 
-// Configure the configuration (optional)
+// Configure the server (optional)
 setConfig({
   databases: [
-    { name: 'mydb', path: './data/mydb.mdb' }
+    { name: 'mydb', path: './data/' }
   ],
   server: {
     port: 3000,
@@ -41,8 +41,9 @@ setConfig({
 // Initialize databases
 initializeDatabases();
 
-// Start the server
-const app = startServer();
+// Create and start the server
+const app = createServer();
+startServer(app);
 ```
 
 ### Using Connector
