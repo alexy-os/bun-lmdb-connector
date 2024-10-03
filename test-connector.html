@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bun-lmdb-connector API Tester</title>
+    <title>ConnectorY || API Tester form page</title>
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMzMzgxZmYiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNsb3VkLWNvZyI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxNyIgcj0iMyIvPjxwYXRoIGQ9Ik00LjIgMTUuMUE3IDcgMCAxIDEgMTUuNzEgOGgxLjc5YTQuNSA0LjUgMCAwIDEgMi41IDguMiIvPjxwYXRoIGQ9Im0xNS43IDE4LjQtLjktLjMiLz48cGF0aCBkPSJtOS4yIDE1LjktLjktLjMiLz48cGF0aCBkPSJtMTAuNiAyMC43LjMtLjkiLz48cGF0aCBkPSJtMTMuMSAxNC4yLjMtLjkiLz48cGF0aCBkPSJtMTMuNiAyMC43LS40LTEiLz48cGF0aCBkPSJtMTAuOCAxNC4zLS40LTEiLz48cGF0aCBkPSJtOC4zIDE4LjYgMS0uNCIvPjxwYXRoIGQ9Im0xNC43IDE1LjggMS0uNCIvPjwvc3ZnPg==">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -33,12 +34,12 @@
                         </div>
                     </div>
                     <div class="ml-4 flex items-center md:ml-6">
-                        <button id="darkModeToggle" type="button" class="rounded-full bg-indigo-600 dark:bg-gray-800 p-1 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600">
+                        <button id="darkModeToggle" type="button" class="rounded-full bg-indigo-600 dark:bg-gray-800 p-1 text-indigo-200 hover:text-white border-none outline-none">
                             <span class="sr-only">Toggle dark mode</span>
                             <svg id="lightIcon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
                             </svg>
-                            <svg id="darkIcon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <svg id="darkIcon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
                             </svg>
                         </button>
@@ -62,8 +63,8 @@
                                 <div>
                                     <label for="serverUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Server URL</label>
                                     <div class="mt-1 flex rounded-md shadow-sm">
-                                        <input type="text" name="serverUrl" id="serverUrl" class="block w-full pl-2 rounded-none rounded-l-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-gray-100 dark:bg-gray-700 h-8 dark:text-white dark:border-gray-600" placeholder="http://localhost:5000">
-                                        <button type="submit" class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-indigo-600 px-3 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Connect</button>
+                                        <input type="text" name="serverUrl" id="serverUrl" class="block w-full pl-2 rounded-none rounded-l-md sm:text-sm bg-gray-100 dark:bg-gray-700 h-8 dark:text-white border-none outline-none" placeholder="http://localhost:5000">
+                                        <button type="submit" class="inline-flex items-center rounded-r-md bg-indigo-600 px-3 text-sm font-medium text-white hover:bg-indigo-700 border-none outline-none">Connect</button>
                                     </div>
                                 </div>
                             </form>
@@ -111,14 +112,30 @@
                         <div class="px-4 py-5 sm:p-6">
                             <h2 class="text-lg font-medium text-gray-900 dark:text-white">How to deploy bun-lmdb-connector</h2>
                             <div class="mt-5 text-sm text-gray-500 dark:text-gray-400">
-                                <ol class="list-decimal list-inside space-y-2">
-                                    <li>Install Bun: <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">curl -fsSL https://bun.sh/install | bash</code></li>
-                                    <li>Clone the repository: <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">git clone https://github.com/alexy-os/bun-lmdb-connector.git</code></li>
-                                    <li>Navigate to the project directory: <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">cd bun-lmdb-connector</code></li>
-                                    <li>Install dependencies: <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">bun install</code></li>
-                                    <li>Start the server: <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">bun run src/index.ts</code></li>
-                                    <li>The server will start on http://localhost:5000 by default</li>
-                                </ol>
+                                <pre>
+                                    <code>
+    import { setConfig, initializeDatabases, createServer, startServer } from 'bun-lmdb-connector';
+
+    // Configure the server (optional)
+    setConfig({
+        databases: [
+            { name: 'mydb', path: './data/' }
+        ],
+        server: {
+            port: 3000,
+            host: 'localhost'
+        },
+        logLevel: 'info'
+    });
+    
+    // Initialize databases
+    initializeDatabases();
+    
+    // Create and start the server
+    const app = createServer();
+    startServer(app);
+                                    </code>
+                                </pre>
                             </div>
                         </div>
                     </div>

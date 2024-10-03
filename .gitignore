@@ -4,3 +4,6 @@
 /bun.lockb
 /data
 /server
+/.gitignore
+/.npmignore
+
